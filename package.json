@@ -1,14 +1,23 @@
 {
   "name": "listen",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tiantongmiao/listen.git"
+  },
   "author": "zkl",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tiantongmiao/listen/issues"
+  },
+  "homepage": "https://github.com/tiantongmiao/listen#readme",
   "dependencies": {
     "vant-weapp": "^0.5.28"
-  }
+  },
+  "devDependencies": {},
+  "description": ""
 }

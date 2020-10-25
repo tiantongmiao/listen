@@ -1,0 +1,23 @@
+{
+  "id": "2154693",
+  "name": "lisen",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "5342981",
+      "name": "我的",
+      "font_class": "xingzhuanggongnengtubiao-",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
+      "icon_id": "15055323",
+      "name": "朋友圈",
+      "font_class": "pengyouquan",
+      "unicode": "e673",
+      "unicode_decimal": 58995
+    }
+  ]
+}

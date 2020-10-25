@@ -1,7 +1,7 @@
 {
   "pages":[
-    "pages/index/index",
-    "pages/logs/logs"
+    "pages/group/index",
+    "pages/me/index"
   ],
   "window":{
     "backgroundTextStyle":"light",
@@ -10,5 +10,27 @@
     "navigationBarTextStyle":"black"
   },
   "style": "v2",
-  "sitemapLocation": "sitemap.json"
+  "sitemapLocation": "sitemap.json",
+  "tabBar": {
+    "custom": true,
+    "color": "#7A7E83",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/group/index",
+        "text": "倾听"
+      },
+      {
+        "pagePath": "pages/me/index",
+        "text": "我的"
+      }
+    ]
+  },
+  "usingComponents": {
+    "van-icon": "vant-weapp/icon/index",
+    "van-tabbar": "vant-weapp/tabbar/index",
+    "van-tabbar-item": "vant-weapp/tabbar-item/index"
+  }
 }
