@@ -9,8 +9,10 @@ Component({
     }
   },
   data: {
-    avatarUrl: '',
-    nickName: ''
+    user:{
+      name: '小姐姐',
+      signature: '个性签名啊啊啊啊啊啊啊'
+    }
   },
   ready: function (options) {
     var that = this;
@@ -28,10 +30,4 @@ Component({
       }
     })
   },
-  methods: {
-    toEdit() {
-      const url = '/pages/meedit/index'
-      wx.redirectTo({ url })
-    }
-  }
 })

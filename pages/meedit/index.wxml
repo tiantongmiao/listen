@@ -1,0 +1,19 @@
+<!--index.wxml-->
+<view class="container">
+  <van-cell-group>
+    <van-field
+      value="{{ user.name }}"
+      label="昵称"
+      placeholder="请输入昵称"
+    />
+    <van-field
+      value="{{ user.signature }}"
+      label="个性签名"
+      placeholder="请输入个性签名"
+      type="textarea"
+      autosize
+    />
+  </van-cell-group>
+  <view style="height: 40px"></view>
+  <button type="primary" class="block-btn mt50">立即保存</button>
+</view>
