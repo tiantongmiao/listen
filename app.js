@@ -6,6 +6,16 @@ App({
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
 
+    if (!wx.cloud) {
+      console.error("云不存在")
+    } else {
+      wx.cloud.init({
+        env: 'listen-2gskorawde4c93ea',
+        traceUser: true,
+      })
+      this.globalData.db = wx.cloud.database()
+    }
+
     // 登录
     wx.login({
       success: res => {
@@ -34,6 +44,7 @@ App({
     })
   },
   globalData: {
+    db: null,
     userInfo: null
   }
 })
