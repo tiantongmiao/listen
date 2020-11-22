@@ -1,0 +1,8 @@
+<!--index.wxml-->
+<view class="container">
+    <!-- 未授权展示 -->
+    <button type="primary" 
+    open-type="getUserInfo" 
+    bindgetuserinfo="bindGetUserInfo"
+    >授权</button>
+</view>

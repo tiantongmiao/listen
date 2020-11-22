@@ -2,6 +2,7 @@
   "pages":[
     "pages/group/index",
     "pages/me/index",
+    "pages/auth/index",
     "pages/meedit/index",
     "pages/note/index",
     "custom-tab-bar/index"
