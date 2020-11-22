@@ -6,7 +6,7 @@
   </view>
   <view wx:else>
     <button open-type="getUserInfo" class="block-btn plus mb10" data-editType="add" bindtap="onShowEdit">
-      <van-icon class="icon-plus" name="plus" />添加</button>
+      <van-icon class="icon-plus" name="plus" />留言</button>
     <scroll-view scroll-y="true" style="width: 100%; height: 400px;margin-top:10px" refresher-enabled="{{true}}" refresher-triggered="{{triggered}}" refresher-threshold="100" bindscrolltolower="onScrollToLower" bindrefresherrefresh="onRefresh">
       <!-- 循环的列表 -->
       <view class="card" wx:for="{{listData}}" wx:key="index">
@@ -44,7 +44,7 @@
       <!--自动隐藏action-sheet-->
       <action-sheet-cancel bindtap="showInput">
         确认
-        <view style='height:100rpx;'></view>
+        <view style='height:1rpx;'></view>
       </action-sheet-cancel>
     </action-sheet>
   </view>

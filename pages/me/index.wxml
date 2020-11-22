@@ -1,17 +1,17 @@
 <!--index.wxml-->
 <view class="container">
   <view class="text-center pb20">
-    <image class="userImg" src='{{userInfo.avatarUrl}}'></image>
-    <view>{{userInfo.nickName}}</view>
+    <image class="userImg" src='{{avatarUrl}}'></image>
+    <view>{{nickName}}</view>
     <view>个性签名</view>
   </view>
   <view>
     <van-cell-group>
       <van-cell bind:click="toEdit" title="修改个人信息" is-link />
       <!-- 用户向管理员留言，跳转到管理员的留言板，可查看别人的留言和回答，也可留言 -->
-      <van-cell title="倾诉" is-link />
+      <van-cell bind:click="toNote" title="倾诉" is-link />
       <!-- 管理员的留言板 -->
-      <van-cell title="我的留言板" is-link />
+      <van-cell bind:click="toNote" title="我的留言板" is-link />
     </van-cell-group>
   </view>
 </view>

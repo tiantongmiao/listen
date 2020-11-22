@@ -19,18 +19,18 @@ Component({
      */
     wx.getUserInfo({
       success: function (res) {
-        var avatarUrl = 'userInfo.avatarUrl';
-        var nickName = 'userInfo.nickName';
-        that.setData({
-          [avatarUrl]: res.userInfo.avatarUrl,
-          [nickName]: res.userInfo.nickName,
-        })
+        console.log(res);
+        
       }
     })
   },
   methods: {
     toEdit() {
       const url = '/pages/meedit/index'
+      wx.redirectTo({ url })
+    },
+    toNote(){
+      const url = '/pages/note/index'
       wx.redirectTo({ url })
     }
   }

@@ -1,18 +1,7 @@
 Component({
-  pageLifetimes: {
-    show() {
-      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-        this.getTabBar().setData({
-          active: 1
-        })
-      }
-    }
-  },
   data: {
-    user:{
-      name: '小姐姐',
-      signature: '个性签名啊啊啊啊啊啊啊'
-    }
+    name: '小姐姐',
+    signature: '个性签名啊啊啊啊啊啊啊'
   },
   ready: function (options) {
     var that = this;
@@ -30,4 +19,21 @@ Component({
       }
     })
   },
+  methods: {
+    onSave() {
+      // 保存
+      console.log(this.data.name)
+      console.log(this.data.signature)
+    },
+    changeName(value) {
+      this.setData({
+        name: value.detail
+      })
+    },
+    changeSignature(value) {
+      this.setData({
+        signature: value.detail
+      })
+    }
+  }
 })

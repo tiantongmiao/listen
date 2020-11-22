@@ -2,18 +2,20 @@
 <view class="container">
   <van-cell-group>
     <van-field
-      value="{{ user.name }}"
+      value="{{ name }}"
       label="昵称"
+      bind:change="changeName"
       placeholder="请输入昵称"
     />
     <van-field
-      value="{{ user.signature }}"
+      value="{{ signature }}"
       label="个性签名"
+      bind:change="changeSignature"
       placeholder="请输入个性签名"
       type="textarea"
       autosize
     />
   </van-cell-group>
   <view style="height: 40px"></view>
-  <button type="primary" class="block-btn mt50">立即保存</button>
+  <button type="primary" bindtap="onSave" class="block-btn mt50">立即保存</button>
 </view>
