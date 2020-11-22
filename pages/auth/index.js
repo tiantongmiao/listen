@@ -15,6 +15,18 @@ Component({
       const userInfo= e.detail.userInfo;
       if (userInfo) {
         //用户按了允许授权按钮
+        database.find('user', new pageHelper(1, 1, { _openid: '{openid}' }))
+          .then(res => {
+            if (res.data && res.data.length == 0) {
+              let user = new User();
+              user.uName = userInfo.nickName;
+              user.uWxImg = userInfo.avatarUrl;
+              user.uInfomation = "";
+              database.add('user', user).then(res => {
+                console.log(res)
+              })
+            }
+          })
         wx.switchTab({
           url: '/pages/group/index',
         })

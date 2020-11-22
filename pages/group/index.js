@@ -15,7 +15,6 @@ Component({
     }
   },
   data: {
-    idUserInfo: false,
     showPop: false,
     editInput: '',
     triggered: false,
@@ -40,51 +39,25 @@ Component({
     ]
   },
   ready: function (options) {
-    this.setData({
-      idUserInfo: app.globalData.idUserInfo
-    })
+    this.init()
+    // let page = new pageHelper(1, 10, {_openid: '{openid}'});
+    // database.find('user', page).then(res => {
+    //   console.log(res)
+    // })
   },
   methods: {
-    bindGetUserInfo(e) {
-      var that = this;
-      const userInfo= e.detail.userInfo;
-      if (userInfo) {
-        this.init();
-        //用户按了允许授权按钮
-        this.setData({
-          idUserInfo: true
-        })
-        let user = new User();
-        user.uName = userInfo.nickName;
-        user.uWxImg = userInfo.avatarUrl;
-        user.uInfomation = "";
-        database.add('user', user).then(res => {
-          console.log(res)
-        })
-      } else {
-        wx.showModal({
-          content: "您已拒绝授权",
-          showCancel: false,
-          confirmText: '知道了',
-          success: function (res) {
-          }
-        })
-      }
-    },
     init() {
       let dy = new Dynamic();
       dy.dType = 1;
       dy.status = 1;
-      let page = new pageHelper();
-      page.pageNum = 1;
-      page.pageSize = 10;
-      page.where = dy;
+      let page = new pageHelper(1, 10, dy);
       database.find('dynamic', page).then(res => {
+        console.log(res.data)
         // 获取对应用户信息
         res.data.map(item => {
           // 格式化时间
           item.cTime = utils.formatTime(item.cTime);
-          this.getUser(item._id)
+          this.getUser(item._openid)
           return item;
         })
         this.setData({
@@ -95,13 +68,10 @@ Component({
       })
     },
     getUser(id) {
-      let page = new pageHelper();
-      page.pageNum = 1;
-      page.pageSize = 10;
-      page.where = user;
       let user = new User();
-      user._id = id;
-      database.find('user', user, page).then(res => {
+      user._openid = id;
+      let page = new pageHelper(1, 1, user);
+      database.find('user', page).then(res => {
         console.log(res)
 
       }).catch(err => {
