@@ -51,6 +51,9 @@ Component({
       if (userInfo) {
         this.init();
         //用户按了允许授权按钮
+        this.setData({
+          idUserInfo: true
+        })
         let user = new User();
         user.uName = userInfo.nickName;
         user.uWxImg = userInfo.avatarUrl;
@@ -77,17 +80,12 @@ Component({
       page.pageSize = 10;
       page.where = dy;
       database.find('dynamic', page).then(res => {
-        // console.log(res)
-
         // 获取对应用户信息
         res.data.map(item => {
           // 格式化时间
-          console.log(item)
           item.cTime = utils.formatTime(item.cTime);
           this.getUser(item._id)
           return item;
-
-          
         })
         this.setData({
           listData: res.data
