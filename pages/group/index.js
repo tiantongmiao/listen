@@ -1,3 +1,9 @@
+const database = require('../../module/controller/BaseConstroller.js')
+const Dynamic = require('../../module/model/Dynamic.js')
+const User = require('../../module/model/User.js')
+const pageHelper = require('../../module/pagehelper/PageHelper.js')
+const utils = require('../../utils/util.js')
+var app = getApp();
 Component({
   pageLifetimes: {
     show() {
@@ -9,45 +15,12 @@ Component({
     }
   },
   data: {
+    idUserInfo: app.globalData.idUserInfo,
     showPop: false,
     editInput: '',
     triggered: false,
-    avatarUrl: '',
-    nickName: '',
     hiddenEdit: true,
     listData: [
-      {
-        avatarUrl: "https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83erficCx5mDicEFc4Unia7NJr33I20iaXwc4pBdAotcMLqyAjwibBuXYNTIk3TBhr9Vjfy0784Dh90Z8fYg/132",
-        nickName: '小姐姐',
-        content: '今天天气很好',
-        // showMessage: false,
-        messageList: [
-          {
-            name: '小A',
-            message: '是啊，我也觉得'
-          },
-          {
-            name: '小B',
-            message: '我这边下雨哎'
-          }
-        ]
-      },
-      {
-        avatarUrl: "https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83erficCx5mDicEFc4Unia7NJr33I20iaXwc4pBdAotcMLqyAjwibBuXYNTIk3TBhr9Vjfy0784Dh90Z8fYg/132",
-        nickName: '小姐姐',
-        content: '今天天气很好',
-        // showMessage: false,
-        messageList: [
-          {
-            name: '小A',
-            message: '是啊，我也觉得'
-          },
-          {
-            name: '小B',
-            message: '我这边下雨哎'
-          }
-        ]
-      },
       {
         avatarUrl: "https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83erficCx5mDicEFc4Unia7NJr33I20iaXwc4pBdAotcMLqyAjwibBuXYNTIk3TBhr9Vjfy0784Dh90Z8fYg/132",
         nickName: '小姐姐',
@@ -67,22 +40,76 @@ Component({
     ]
   },
   ready: function (options) {
-    var that = this;
-    /**
-     * 获取用户信息
-     */
-    wx.getUserInfo({
-      success: function (res) {
-        var avatarUrl = 'userInfo.avatarUrl';
-        var nickName = 'userInfo.nickName';
-        that.setData({
-          [avatarUrl]: res.userInfo.avatarUrl,
-          [nickName]: res.userInfo.nickName,
-        })
-      }
-    })
   },
   methods: {
+    bindGetUserInfo(e) {
+      var that = this;
+      const userInfo= e.detail.userInfo
+      console.log(userInfo)
+      if (userInfo) {
+        console.log('000')
+        this.init()
+        //用户按了允许授权按钮
+        let user = new User();
+        user.uName = userInfo.nickName;
+        user.uWxImg = userInfo.avatarUrl;
+        user.uInfomation = "";
+        database.add('user', user).then(res => {
+          console.log(res)
+        })
+      } else {
+        wx.showModal({
+          content: "您已拒绝授权",
+          showCancel: false,
+          confirmText: '知道了',
+          success: function (res) {
+            
+          }
+        })
+      }
+    },
+    init() {
+      let dy = new Dynamic();
+      dy.dType = 1;
+      dy.status = 1;
+      let page = new pageHelper();
+      page.pageNum = 1;
+      page.pageSize = 10;
+      page.where = dy;
+      database.find('dynamic', page).then(res => {
+        // console.log(res)
+
+        // 获取对应用户信息
+        res.data.map(item => {
+          // 格式化时间
+          console.log(item)
+          item.cTime = utils.formatTime(item.cTime);
+          this.getUser(item._id)
+          return item;
+
+          
+        })
+        this.setData({
+          listData: res.data
+        })
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    getUser(id) {
+      let user = new User();
+      let page = new pageHelper();
+      page.pageNum = 1;
+      page.pageSize = 10;
+      page.where = user;
+      user._id = id;
+      database.find('user', page).then(res => {
+        console.log(res)
+
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     // 滚动到底部
     onScrollToLower() {
       console.log('到底啦，加载下一页')
@@ -92,6 +119,7 @@ Component({
       // this._freshing为刷新的状态值
       if (this._freshing) return
       this._freshing = true
+      this.init()
       setTimeout(() => {
         this.setData({
           triggered: false,
@@ -99,8 +127,6 @@ Component({
         this._freshing = false
       }, 3000)
     },
-    // 展示留言区域
-    
     // 展示评论编辑区
     onShowEdit(e) {
       this.setData({
@@ -108,8 +134,15 @@ Component({
       })
     },
     // 删除功能
-    onDel() {
-      
+    onDel(e) {
+      let dy = new Dynamic()
+      dy._id = e.currentTarget.dataset.id
+      database.del('dynamic', dy).then(res => {
+        // console.log(res)
+        this.init()
+      }).catch(err => {
+        console.log(err)
+      })
     },
     onShowEditChange() {
       this.setData({
@@ -122,30 +155,22 @@ Component({
     },
     bindinput(e) {
       // 输入框失去焦点
-      // console.log(e.detail.value)
       this.setData({
         editInput: e.detail.value
       })
     },
-    showInput() {
-      // 确认
-      console.log(this.data.editInput)
-    },
-    onAdd() {
-      console.log('添加')
-      this.setData({
-        showPop: true
-      })
-    },
-    onClosePop() {
-      // 关闭弹窗
-      this.setData({
-        showPop: false
-      })
-    },
     onSaveAdd() {
       // 保存添加
-      console.log(this.data.editInput)
+      let dy = new Dynamic()
+      dy.status = 1
+      dy.dType = 1
+      dy.dContent = this.data.editInput
+      database.add('dynamic', dy).then(res => {
+        // console.log(res)
+        this.init()
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 })

@@ -1,11 +1,11 @@
 <!--index.wxml-->
 <view class="container">
-  <view wx:if="{{globalData.idUserInfo}}">
+  <view wx:if="{{!idUserInfo}}">
     <!-- 未授权展示 -->
-    <button type="primary" open-type="getUserInfo">授权</button>
+    <button type="primary" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权</button>
   </view>
   <view wx:else>
-    <button open-type="getUserInfo" class="block-btn plus mb10" data-editType="add" bindtap="onShowEdit">
+    <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" class="block-btn plus mb10" data-editType="add" bindtap="onShowEdit">
       <van-icon class="icon-plus" name="plus" />添加</button>
     <scroll-view scroll-y="true" style="width: 100%; height: 400px;margin-top:10px" refresher-enabled="{{true}}" refresher-triggered="{{triggered}}" refresher-threshold="100" bindscrolltolower="onScrollToLower" bindrefresherrefresh="onRefresh">
       <!-- 循环的列表 -->
@@ -17,17 +17,17 @@
             </view>
             <view class="fl text-left">
               <view>{{item.nickName}}</view>
-              <view>时间</view>
+              <view>{{item.cTime}}</view>
             </view>
           </view>
-          <view class="text-left">{{item.content}}</view>
+          <view class="text-left">{{item.dContent}}</view>
           <view class="text-right">
             <van-icon class="font-size-20 pr10" name="chat-o" data-showedit="{{item.showEdit}}" data-index="{{index}}" data-esitType="editNote" bind:click="onShowEdit" />
             <!-- 管理员才有的删除功能 -->
-            <van-icon class="font-size-20" name="close" bind:click="onDel" />
+            <van-icon class="font-size-20" data-id="{{item._id}}" name="close" bind:click="onDel" />
           </view>
           <!-- 消息展示区 -->
-          <view class="message-view">
+          <view class="message-view"  wx:if="{{item.messageList && item.messageList.length > 0}}">
             <!-- 消息循环 -->
             <view class="flex-row message-view-text" wx:for="{{item.messageList}}" wx:key="cindex" wx:for-item="citem" wx:for-index="cindex">
               <view>{{citem.name}}：</view>
@@ -42,7 +42,7 @@
         <textarea type="text" name="editInput" value="{{ editInput }}" auto-focus="true" class="edit-view-textarea" placeholder="留下你想说的话..." bindconfirm="obtainInput" bindinput="bindinput" />
       </action-sheet-item>
       <!--自动隐藏action-sheet-->
-      <action-sheet-cancel bindtap="showInput">
+      <action-sheet-cancel bindtap="onSaveAdd">
         确认
         <view style='height:100rpx;'></view>
       </action-sheet-cancel>

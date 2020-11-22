@@ -42,7 +42,7 @@
         <textarea type="text" name="editInput" value="{{ editInput }}" auto-focus="true" class="edit-view-textarea" placeholder="留下你想说的话..." bindconfirm="obtainInput" bindinput="bindinput" />
       </action-sheet-item>
       <!--自动隐藏action-sheet-->
-      <action-sheet-cancel bindtap="showInput">
+      <action-sheet-cancel bindtap="onSaveAdd">
         确认
         <view style='height:1rpx;'></view>
       </action-sheet-cancel>

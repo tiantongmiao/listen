@@ -1,8 +1,8 @@
 <!--index.wxml-->
 <view class="container">
   <view class="text-center pb20">
-    <image class="userImg" src='{{avatarUrl}}'></image>
-    <view>{{nickName}}</view>
+    <image class="userImg" src='{{userImg}}'></image>
+    <view>{{name}}</view>
     <view>个性签名</view>
   </view>
   <view>

@@ -9,8 +9,8 @@ Component({
     }
   },
   data: {
-    avatarUrl: '',
-    nickName: ''
+    userImg: '',
+    name: ''
   },
   ready: function (options) {
     var that = this;
@@ -19,8 +19,11 @@ Component({
      */
     wx.getUserInfo({
       success: function (res) {
-        console.log(res);
-        
+        console.log(res)
+        that.setData({
+          'userImg': res.userInfo.avatarUrl,
+          'name': res.userInfo.nickName,
+        })
       }
     })
   },

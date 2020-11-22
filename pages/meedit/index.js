@@ -10,8 +10,6 @@ Component({
      */
     wx.getUserInfo({
       success: function (res) {
-        var avatarUrl = 'userInfo.avatarUrl';
-        var nickName = 'userInfo.nickName';
         that.setData({
           [avatarUrl]: res.userInfo.avatarUrl,
           [nickName]: res.userInfo.nickName,
