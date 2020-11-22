@@ -28,10 +28,10 @@ App({
         if (res.authSetting['scope.userInfo']) {
           // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
           console.log("已授权");
+          this.globalData.idUserInfo = true;
           wx.getUserInfo({
             success: res => {
               // 可以将 res 发送给后台解码出 unionId
-              this.globalData.idUserInfo = true;
               this.globalData.userInfo = res.userInfo
 
               // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
@@ -43,7 +43,6 @@ App({
           })
         } else {
           console.log("未授权");
-          
           this.globalData.idUserInfo = false;
         }
       }
@@ -52,6 +51,6 @@ App({
   globalData: {
     db: null,
     userInfo: null,
-    idUserInfo: true,
+    idUserInfo: false,
   }
 })

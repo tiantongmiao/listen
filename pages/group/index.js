@@ -15,7 +15,7 @@ Component({
     }
   },
   data: {
-    idUserInfo: app.globalData.idUserInfo,
+    idUserInfo: false,
     showPop: false,
     editInput: '',
     triggered: false,
@@ -40,15 +40,16 @@ Component({
     ]
   },
   ready: function (options) {
+    this.setData({
+      idUserInfo: app.globalData.idUserInfo
+    })
   },
   methods: {
     bindGetUserInfo(e) {
       var that = this;
-      const userInfo= e.detail.userInfo
-      console.log(userInfo)
+      const userInfo= e.detail.userInfo;
       if (userInfo) {
-        console.log('000')
-        this.init()
+        this.init();
         //用户按了允许授权按钮
         let user = new User();
         user.uName = userInfo.nickName;
@@ -63,7 +64,6 @@ Component({
           showCancel: false,
           confirmText: '知道了',
           success: function (res) {
-            
           }
         })
       }
@@ -97,13 +97,13 @@ Component({
       })
     },
     getUser(id) {
-      let user = new User();
       let page = new pageHelper();
       page.pageNum = 1;
       page.pageSize = 10;
       page.where = user;
+      let user = new User();
       user._id = id;
-      database.find('user', page).then(res => {
+      database.find('user', user, page).then(res => {
         console.log(res)
 
       }).catch(err => {
