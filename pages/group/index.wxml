@@ -8,10 +8,10 @@
         <van-cell>
           <view class="clearfix">
             <view class="fl pr10">
-              <image class="userImg" src='{{item.avatarUrl}}'></image>
+              <image class="userImg" src='{{item.uWxImg}}'></image>
             </view>
             <view class="fl text-left">
-              <view>{{item.nickName}}</view>
+              <view>{{item.uName}}</view>
               <view>{{item.cTime}}</view>
             </view>
           </view>
@@ -31,6 +31,7 @@
           </view>
         </van-cell>
       </view>
+    <view wx:if="showMore">加载中...</view>
     </scroll-view>
     <action-sheet hidden="{{hiddenEdit}}" bindchange="onShowEditChange">
       <action-sheet-item>

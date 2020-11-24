@@ -1,3 +1,6 @@
+const database = require('../../module/controller/BaseConstroller.js')
+const pageHelper = require('../../module/pagehelper/PageHelper.js')
+const User = require('../../module/model/User.js')
 Component({
   pageLifetimes: {
     show() {
@@ -9,23 +12,24 @@ Component({
     }
   },
   data: {
-    userImg: '',
-    name: ''
+    uName: '',
+    uWxImg: '',
+    uInfomation: ''
   },
   ready: function (options) {
     var that = this;
     /**
      * 获取用户信息
      */
-    wx.getUserInfo({
-      success: function (res) {
+    database.find('user', new pageHelper(1, 1, { _openid: '{openid}' }))
+      .then(res => {
         console.log(res)
-        that.setData({
-          'userImg': res.userInfo.avatarUrl,
-          'name': res.userInfo.nickName,
+        this.setData({
+          uName: res.data[0].uName,
+          uWxImg: res.data[0].uWxImg,
+          uInfomation: res.data[0].uInfomation,
         })
-      }
-    })
+      })
   },
   methods: {
     toEdit() {

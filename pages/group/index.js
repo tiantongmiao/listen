@@ -19,24 +19,9 @@ Component({
     editInput: '',
     triggered: false,
     hiddenEdit: true,
-    listData: [
-      {
-        avatarUrl: "https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83erficCx5mDicEFc4Unia7NJr33I20iaXwc4pBdAotcMLqyAjwibBuXYNTIk3TBhr9Vjfy0784Dh90Z8fYg/132",
-        nickName: '小姐姐',
-        content: '今天天气很好',
-        // showMessage: false,
-        messageList: [
-          {
-            name: '小A',
-            message: '是啊，我也觉得'
-          },
-          {
-            name: '小B',
-            message: '我这边下雨哎'
-          }
-        ]
-      }
-    ]
+    listData: [],
+    page: 1,
+    showMore: false
   },
   ready: function (options) {
     this.init()
@@ -50,44 +35,67 @@ Component({
       let dy = new Dynamic();
       dy.dType = 1;
       dy.status = 1;
-      let page = new pageHelper(1, 10, dy);
+      let page = new pageHelper(this.data.page, 10, dy);
       database.find('dynamic', page).then(res => {
-        console.log(res.data)
+        console.log(res)
         // 获取对应用户信息
-        res.data.map(item => {
+        let _data = [...res.data, ...this.data.listData];
+        _data.map((item, index) => {
           // 格式化时间
-          item.cTime = utils.formatTime(item.cTime);
-          this.getUser(item._openid)
+          if (typeof (item.cTime)!= 'string'){
+            item.cTime = utils.formatTime(item.cTime);
+          }
+          this.getUser(item._openid).then(_users => {
+            item['uName'] = _users.uName;
+            item['uWxImg'] = _users.uWxImg;
+            item['_openid'] = _users._openid;
+            item['_id'] = _users._id;
+            var obj = "listData[" + index + "]";
+            this.setData({
+              [obj]: item
+            })
+          });
           return item;
-        })
-        this.setData({
-          listData: res.data
         })
       }).catch(err => {
         console.log(err)
       })
     },
-    getUser(id) {
+    async getUser(id) {
+      let data = {};
       let user = new User();
       user._openid = id;
       let page = new pageHelper(1, 1, user);
-      database.find('user', page).then(res => {
-        console.log(res)
-
+      await database.find('user', page).then(res => {
+        data = res.data[0]
       }).catch(err => {
         console.log(err)
       })
+      return data;
     },
     // 滚动到底部
     onScrollToLower() {
-      console.log('到底啦，加载下一页')
+      // console.log('到底啦，加载下一页')
+      this.setData({
+        showMore: true
+      })
+      setTimeout(() => {
+        this.setData({
+          showMore: true,
+        })
+        this.setData({
+          page: this.data.page++
+        });
+        this.init();
+      }, 3000)
+      
     },
     // 刷新
     onRefresh(){
       // this._freshing为刷新的状态值
       if (this._freshing) return
       this._freshing = true
-      this.init()
+      this.init();
       setTimeout(() => {
         this.setData({
           triggered: false,
@@ -98,6 +106,7 @@ Component({
     // 展示评论编辑区
     onShowEdit(e) {
       this.setData({
+        editInput: '',
         hiddenEdit: !this.data.hiddenEdit
       })
     },
@@ -120,6 +129,7 @@ Component({
     obtainInput() {
       // 点击完成时， 触发 confirm 事件
       console.log('确认')
+      this.onSaveAdd();
     },
     bindinput(e) {
       // 输入框失去焦点

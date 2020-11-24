@@ -2,13 +2,13 @@
 <view class="container">
   <van-cell-group>
     <van-field
-      value="{{ name }}"
+      value="{{ uName }}"
       label="昵称"
       bind:change="changeName"
       placeholder="请输入昵称"
     />
     <van-field
-      value="{{ signature }}"
+      value="{{ uInfomation }}"
       label="个性签名"
       bind:change="changeSignature"
       placeholder="请输入个性签名"

@@ -1,9 +1,9 @@
 <!--index.wxml-->
 <view class="container">
   <view class="text-center pb20">
-    <image class="userImg" src='{{userImg}}'></image>
-    <view>{{name}}</view>
-    <view>个性签名</view>
+    <image class="userImg" src='{{uWxImg}}'></image>
+    <view>{{uName}}</view>
+    <view>{{uInfomation}}</view>
   </view>
   <view>
     <van-cell-group>
