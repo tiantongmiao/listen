@@ -35,14 +35,14 @@ App({
                 url: '/pages/group/index',
               })
               // 可以将 res 发送给后台解码出 unionId
-              this.globalData.userInfo = {...res.userInfo}
+              this.globalData.userInfo = { ...this.globalData.userInfo,...res.userInfo}
 
               this.globalData.db.collection('user')
                 .where({_openid: '{openid}'})
                 .get().then(res => {
                   if(res.data && res.data.length > 0) {
                     let _user = res.data[0]
-                    this.globalData.userInfo = {...res.data[0]}
+                    this.globalData.userInfo = { ...this.globalData.userInfo,...res.data[0]}
                   }
                 })
 

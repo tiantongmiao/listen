@@ -2,7 +2,11 @@
 <view class="container">
     <button class="block-btn plus mb10" data-editType="add" bindtap="onShowEdit">
       <van-icon class="icon-plus" name="plus" />添加</button>
-    <scroll-view scroll-y="true" style="width: 100%; height: 400px;margin-top:10px" refresher-enabled="{{true}}" refresher-triggered="{{triggered}}" refresher-threshold="100" bindscrolltolower="onScrollToLower" bindrefresherrefresh="onRefresh">
+    <scroll-view scroll-y="true" style="width: 100%; margin-top:10px;margin-bottom:50px;"
+      refresher-enabled="{{true}}" 
+      refresher-triggered="{{triggered}}"  
+      refresher-threshold="100"
+      bindrefresherrefresh="onRefresh">
       <!-- 循环的列表 -->
       <view class="card" wx:for="{{listData}}" wx:key="index">
         <van-cell>
@@ -15,9 +19,15 @@
               <view>{{item.cTime}}</view>
             </view>
           </view>
-          <view class="text-left">{{item.dContent}}</view>
+          <view class="text-left break-all">{{item.dContent}}</view>
           <view class="text-right">
-            <van-icon class="font-size-20 pr10" name="chat-o" data-showedit="{{item.showEdit}}" data-index="{{index}}" data-esitType="editNote" bind:click="onShowEdit" />
+            <van-icon class="font-size-20 pr10" name="chat-o" 
+            data-showedit="{{item.showEdit}}" 
+            data-index="{{index}}" 
+            data-id="{{item._id}}" 
+            data-esitType="editNote" 
+            data-type="replay" 
+            bind:click="onShowEdit" />
             <!-- 管理员才有的删除功能 -->
             <van-icon class="font-size-20" data-id="{{item._id}}" name="close" bind:click="onDel" />
           </view>
@@ -31,7 +41,12 @@
           </view>
         </van-cell>
       </view>
-    <view wx:if="showMore">加载中...</view>
+    <view style="text-align: center;margin: 10px 10px 20px;">
+      <view wx:if="{{loading}}" class="nomore">加载中...</view>
+      <view wx:if="{{noMore && !loading}}" class="nomore">没有更多了</view>
+      <view bindtap="onScrollToLower" class="loadmore" wx:if="{{!noMore && !loading}}">加载更多</view>
+      <view wx:if="{{loadingFailed}}" class="nomore">数据加载失败,请重试</view>
+    </view>
     </scroll-view>
     <action-sheet hidden="{{hiddenEdit}}" bindchange="onShowEditChange">
       <action-sheet-item>

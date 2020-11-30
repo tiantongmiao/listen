@@ -1,0 +1,53 @@
+<!--index.wxml-->
+<view class="container">
+  
+  <view class="card">
+  <view class="clearfix">
+        <view class="fl pr10">
+          <image class="userImg" src='{{listObj.uWxImg}}'></image>
+        </view>
+        <view class="fl text-left">
+          <view>{{listObj.uName}}</view>
+          <view>{{listObj.cTime}}</view>
+        </view>
+      </view>
+      <view class="text-left break-all">{{listObj.dContent}}</view>
+      <view class="text-right">
+        <van-icon class="font-size-20 pr10" name="chat-o" data-showedit="{{item.showEdit}}" data-index="{{index}}"
+          data-id="{{item._id}}" data-esitType="editNote" data-type="replay" bind:click="onShowEdit" />
+        <!-- 管理员才有的删除功能 -->
+        <van-icon class="font-size-20" data-id="{{item._id}}" name="close" bind:click="onDel" />
+      </view>
+    </view>
+    
+  <!-- 消息展示区 -->
+  <view class="message-view" wx:if="{{messageList.length > 0}}">
+    <scroll-view scroll-y="true" style="width: 100%; height: 62vh;margin-top:10px;"
+      refresher-enabled="{{true}}" refresher-triggered="{{triggered}}" refresher-threshold="100"
+      bindrefresherrefresh="onRefresh">
+      <!-- 消息循环 -->
+      <view class="flex-row message-view-text" wx:for="{{messageList}}" wx:key="cindex" wx:for-item="citem"
+        wx:for-index="cindex">
+        <view>{{citem.uName}}：</view>
+        <view class="flex-1 text-left break-all">{{citem.rContent}}</view>
+      </view>
+      <view style="text-align: center;margin: 10px 10px 20px;">
+        <view wx:if="{{loading}}" class="nomore">加载中...</view>
+        <view wx:if="{{noMore}}" class="nomore">没有更多了</view>
+        <view bindtap="onScrollToLower" class="loadmore" wx:if="{{!noMore}}">加载更多</view>
+        <view wx:if="{{loadingFailed}}" class="nomore">数据加载失败,请重试</view>
+      </view>
+    </scroll-view>
+  </view>
+  <action-sheet hidden="{{hiddenEdit}}" bindchange="onShowEditChange">
+    <action-sheet-item>
+      <textarea type="text" name="editInput" value="{{ editInput }}" auto-focus="true" class="edit-view-textarea"
+        placeholder="留下你想说的话..." bindconfirm="obtainInput" bindinput="bindinput" />
+      </action-sheet-item>
+      <!--自动隐藏action-sheet-->
+      <action-sheet-cancel bindtap="onSaveAdd">
+        确认
+      <view style='height:100rpx;'></view>
+    </action-sheet-cancel>
+  </action-sheet>
+</view>

@@ -1,45 +1,42 @@
 const database = require('../../module/controller/BaseConstroller.js')
 const pageHelper = require('../../module/pagehelper/PageHelper.js')
 const User = require('../../module/model/User.js')
+const app = getApp()
 Component({
   data: {
     uName: '',
     uInfomation: '',
-    _openid: ''
+    _openid: '',
+    _id: ''
   },
   ready: function (options) {
     var that = this;
-    /**
-     * 获取用户信息
-     */
-    database.find('user', new pageHelper(1, 1, { _openid: '{openid}' }))
-      .then(res => {
-        this.setData({
-          uName: res.data[0].uName,
-          uInfomation: res.data[0].uInfomation,
-          _openid: res.data[0]._openid
-        })
-      })
+    this.setData({
+      uName: app.globalData.userInfo.uName,
+      uInfomation: app.globalData.userInfo.uInfomation,
+      _id: app.globalData.userInfo._id
+    })
   },
   methods: {
     onSave() {
       // 保存
       let _user = new User();
-      _user._openid = this.data._openid;
+      _user._id = this.data._id;
       _user.uName = this.data.uName;
       _user.uInfomation = this.data.uInfomation;
+      console.log(this.data.uInfomation)
       database.edit('user', _user).then(res => {
-        console.log(res)
+        app.globalData.userInfo = {...app.globalData.userInfo,...this.data}
       })
     },
     changeName(value) {
       this.setData({
-        name: value.detail
+        uName: value.detail
       })
     },
     changeSignature(value) {
       this.setData({
-        signature: value.detail
+        uInfomation: value.detail
       })
     }
   }

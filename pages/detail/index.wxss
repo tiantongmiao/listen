@@ -1,0 +1,14 @@
+/**index.wxss**/
+.message-view{
+  background: #ebedf0;
+  border-radius: 10px;
+  padding: 10px;
+}
+.plus{
+  background-color: #fff;
+  border: 1px solid #07c160;
+  color: #07c160;
+}
+.icon-plus{
+  vertical-align: middle
+}

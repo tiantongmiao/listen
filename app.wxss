@@ -4,6 +4,8 @@
   padding: 20px;
   box-sizing: border-box;
   color: #333;
+  height: 100vh;
+  padding-bottom: 50px;
 }
 .clearfix:after {
   content: '';
@@ -90,4 +92,14 @@
 .block-btn{
   margin: 0!important;
   width: 100%!important;
+}
+.break-all{
+  word-break: break-all;
+}
+.nomore{
+  color: #ccc;
+  font-size: 12px;
+}
+.loadmore{
+  color: #07c160;
 }

@@ -3,6 +3,7 @@
     "pages/group/index",
     "pages/me/index",
     "pages/auth/index",
+    "pages/detail/index",
     "pages/meedit/index",
     "pages/note/index",
     "custom-tab-bar/index"

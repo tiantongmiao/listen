@@ -2,8 +2,8 @@
 <view class="container">
   <view class="text-center pb20">
     <image class="userImg" src='{{uWxImg}}'></image>
-    <view>{{uName}}</view>
-    <view>{{uInfomation}}</view>
+    <view class="break-all">{{uName}}</view>
+    <view class="break-all uinformation">{{uInfomation}}</view>
   </view>
   <view>
     <van-cell-group>

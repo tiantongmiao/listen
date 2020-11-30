@@ -14,6 +14,7 @@ CREATE TABLE `user` (
   `U_GENDER` tinyint(1) DEFAULT NULL COMMENT '性别',
   `U_CTIME` datetime DEFAULT NULL COMMENT '创建时间',
   `U_UTIME` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `U_TYPE` int(2) DEFAULT NULL COMMENT '用户类型(1: 普通用户, 2: 管理员)',
   `U_STATUS` int(1) DEFAULT NULL COMMENT '用户状态(0: 删除, 1: 激活, 2: 违规)',
   PRIMARY KEY (`U_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户';

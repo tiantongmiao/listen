@@ -10,7 +10,7 @@ const insert = (table, data) => {
 }
 
 const update = (table, data, where) => {
-  data.uTime = new data()
+  data.uTime = new Date()
   const _id = data._id
   where = where ? where : {_id}
   delete data._id

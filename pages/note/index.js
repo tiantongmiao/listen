@@ -1,82 +1,104 @@
+const database = require('../../module/controller/BaseConstroller.js')
+const MBoard = require('../../module/model/MBoard.js')
+const User = require('../../module/model/User.js')
+const Replay = require('../../module/model/Replay.js')
+const pageHelper = require('../../module/pagehelper/PageHelper.js')
+const utils = require('../../utils/util.js')
+var app = getApp();
 Component({
   data: {
     showPop: false,
     editInput: '',
     triggered: false,
-    avatarUrl: '',
-    nickName: '',
     hiddenEdit: true,
-    listData: [
-      {
-        avatarUrl: "https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83erficCx5mDicEFc4Unia7NJr33I20iaXwc4pBdAotcMLqyAjwibBuXYNTIk3TBhr9Vjfy0784Dh90Z8fYg/132",
-        nickName: '小姐姐',
-        content: '今天天气很好',
-        // showMessage: false,
-        messageList: [
-          {
-            name: '小A',
-            message: '是啊，我也觉得'
-          },
-          {
-            name: '小B',
-            message: '我这边下雨哎'
-          }
-        ]
-      },
-      {
-        avatarUrl: "https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83erficCx5mDicEFc4Unia7NJr33I20iaXwc4pBdAotcMLqyAjwibBuXYNTIk3TBhr9Vjfy0784Dh90Z8fYg/132",
-        nickName: '小姐姐',
-        content: '今天天气很好',
-        // showMessage: false,
-        messageList: [
-          {
-            name: '小A',
-            message: '是啊，我也觉得'
-          },
-          {
-            name: '小B',
-            message: '我这边下雨哎'
-          }
-        ]
-      },
-      {
-        avatarUrl: "https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83erficCx5mDicEFc4Unia7NJr33I20iaXwc4pBdAotcMLqyAjwibBuXYNTIk3TBhr9Vjfy0784Dh90Z8fYg/132",
-        nickName: '小姐姐',
-        content: '今天天气很好',
-        // showMessage: false,
-        messageList: [
-          {
-            name: '小A',
-            message: '是啊，我也觉得'
-          },
-          {
-            name: '小B',
-            message: '我这边下雨哎'
-          }
-        ]
-      }
-    ]
+    listData: [],
+    page: 1,
+    loading: false,
+    noMore: false,
+    loadingFailed: false,
+    inputType: '',
   },
   ready: function (options) {
-    var that = this;
-    /**
-     * 获取用户信息
-     */
-    wx.getUserInfo({
-      success: function (res) {
-        var avatarUrl = 'userInfo.avatarUrl';
-        var nickName = 'userInfo.nickName';
-        that.setData({
-          [avatarUrl]: res.userInfo.avatarUrl,
-          [nickName]: res.userInfo.nickName,
-        })
-      }
-    })
+    this.init()
   },
   methods: {
+    init(refresh) {
+      if(refresh) {
+        this.setData({
+          listData: [],
+          noMore: false,
+          loading: true
+        })
+      }
+      let mboard = new MBoard();
+      mboard.status = 1;
+      if(!this.data.noMore){
+        let page = new pageHelper(this.data.page, 10, mboard);
+        database.find('mboard', page).then(res => {
+          // 获取对应用户信息
+          let _data = [...res.data, ...this.data.listData];
+          _data.map((item, index) => {
+            // 格式化时间
+            if (typeof (item.cTime)!= 'string'){
+              item.cTime = utils.formatTime(item.cTime);
+            }
+            this.getUser(item._openid).then(_users => {
+              item['uName'] = _users.uName;
+              item['uWxImg'] = _users.uWxImg;
+              var obj = "listData[" + index + "]";
+              this.setData({
+                [obj]: item
+              })
+            });
+            return item;
+          });
+          database.count('mboard', mboard).then(res => {
+            if (_data.length < res.total) {
+              this.setData({
+                noMore: false,
+                loading: false
+              })
+            } else {
+              this.setData({
+                noMore: true,
+                loading: false
+              })
+            }
+          })
+        }).catch(err => {
+          console.log(err)
+        })
+      }
+    },
+    // 获取用户信息
+    async getUser(id) {
+      let data = {};
+      let user = new User();
+      user._openid = id;
+      let page = new pageHelper(1, 1, user);
+      await database.find('user', page).then(res => {
+        data = res.data[0]
+      }).catch(err => {
+        console.log(err)
+      })
+      return data;
+    },
     // 滚动到底部
     onScrollToLower() {
-      console.log('到底啦，加载下一页')
+      //到底啦，加载下一页
+      if (!this.data.noMore) {
+        this.setData({
+          loading: true,
+          page: this.data.page++
+        })
+        this.init();
+      } else {
+        setTimeout(() => {
+          this.setData({
+            loading: false
+          })
+        }, 2000)
+      }
     },
     // 刷新
     onRefresh(){
@@ -88,19 +110,39 @@ Component({
           triggered: false,
         })
         this._freshing = false
+        this.init(true);
       }, 3000)
     },
-    // 展示留言区域
-    
     // 展示评论编辑区
     onShowEdit(e) {
-      this.setData({
-        hiddenEdit: !this.data.hiddenEdit
-      })
+      if (e.currentTarget.dataset.type) {
+        const url = '/pages/detail/index?_id=' + e.currentTarget.dataset.id
+        wx.redirectTo({ url })
+      } else {
+        this.setData({
+          editInput: '',
+          hiddenEdit: !this.data.hiddenEdit
+        })
+      }
     },
     // 删除功能
-    onDel() {
-      
+    onDel(e) {
+      // 删除动态评论
+      let replay = new Replay();
+      replay.mTargetId = e.currentTarget.dataset.id
+      database.del('replay', replay).then(res => {
+        // 删除动态
+        let mboard = new MBoard()
+        mboard._id = e.currentTarget.dataset.id
+        database.del('mboard', mboard).then(res => {
+          // 重新加载页面数据
+          this.init(true)
+        }).catch(err => {
+          console.log(err)
+        })
+      }).catch(err => {
+        console.log(err)
+      })
     },
     onShowEditChange() {
       this.setData({
@@ -109,34 +151,29 @@ Component({
     },
     obtainInput() {
       // 点击完成时， 触发 confirm 事件
-      console.log('确认')
+      this.onSaveAdd();
     },
     bindinput(e) {
       // 输入框失去焦点
-      // console.log(e.detail.value)
       this.setData({
         editInput: e.detail.value
       })
     },
-    showInput() {
-      // 确认
-      console.log(this.data.editInput)
-    },
-    onAdd() {
-      console.log('添加')
-      this.setData({
-        showPop: true
-      })
-    },
-    onClosePop() {
-      // 关闭弹窗
-      this.setData({
-        showPop: false
-      })
-    },
     onSaveAdd() {
-      // 保存添加
-      console.log(this.data.editInput)
+      // 保存
+      let mboard = new MBoard()
+      mboard.status = 1
+      mboard.mContent = this.data.editInput
+      database.add('mboard', mboard).then(res => {
+        this.setData({
+          noMore:false,
+          listData: [],
+          page: 1
+        })
+        this.init()
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 })
