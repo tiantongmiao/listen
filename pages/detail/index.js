@@ -14,7 +14,7 @@ Page({
     messageList: [],
     listObj: {},
     oid: '',
-    page: 1,
+    page: 0,
     loading: false,
     noMore: false,
     loadingFailed: false,
@@ -26,7 +26,7 @@ Page({
       oid: options._id
     })
     this.getDy()
-    this.getmList()
+    this.getmList(false, 1)
   },
   //获取动态信息
   getDy() {
@@ -48,7 +48,7 @@ Page({
     })
   },
   //获取回复列表
-  getmList(refresh) {
+  getmList(refresh, _page) {
     if(refresh) {
       this.setData({
         messageList: [],
@@ -56,17 +56,22 @@ Page({
         loading: true
       })
     }
+    this.setData({
+      page: _page
+    })
     if(!this.data.noMore){
       let replay = new Replay()
       replay.rTarget = this.data.oid
       replay.status = 1
       replay.rType = 2
-      let page = new pageHelper(this.data.page, 10, replay);
+      let page = new pageHelper(_page, 10, replay);
       database.find('replay', page).then(res => {
-        let _arr = res.data
+        console.log(res)
+        let _arr = [...this.data.messageList,...res.data]
         this.setData({
           messageList: _arr
         })
+        console.log(_arr)
         _arr.map((item, index) => {
           this.getUser(item._openid).then(_users => {
             item['uName'] = _users.uName;
@@ -109,14 +114,15 @@ Page({
     return data;
   },
   // 滚动到底部
-  onScrollToLower() {
+  onScrollToLower(e) {
     //到底啦，加载下一页
     if (!this.data.noMore) {
       this.setData({
         loading: true,
-        page: this.data.page++
       })
-      this.getmList();
+      let _page = Number(e.currentTarget.dataset.page);
+      _page++;
+      this.getmList(false, _page);
     } else {
       setTimeout(() => {
         this.setData({

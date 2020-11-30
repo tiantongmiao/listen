@@ -11,8 +11,11 @@ const insert = (table, data) => {
 
 const update = (table, data, where) => {
   data.uTime = new Date()
-  const _id = data._id
-  where = where ? where : {_id}
+  const _where = {
+    _id: data._id,
+    _openid: '{openid}'
+  }
+  where = where ? {...where, ..._where} : _where
   delete data._id
   delete data._openid
   return db.collection(table)
@@ -32,9 +35,10 @@ const search =  (table, page) => {
   .get()
 }
 
-const remove = (table, data) => {
+const remove = (table, where) => {
+  where = {...where, ...{_openid: '{openid}'}}
   return db.collection(table)
-  .where(data)
+  .where(where)
   .remove()
 }
 

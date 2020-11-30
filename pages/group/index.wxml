@@ -44,7 +44,7 @@
     <view style="text-align: center;margin: 10px 10px 20px;">
       <view wx:if="{{loading}}" class="nomore">加载中...</view>
       <view wx:if="{{noMore && !loading}}" class="nomore">没有更多了</view>
-      <view bindtap="onScrollToLower" class="loadmore" wx:if="{{!noMore && !loading}}">加载更多</view>
+      <view bindtap="onScrollToLower" class="loadmore" data-page="{{page}}" wx:if="{{!noMore && !loading}}">加载更多</view>
       <view wx:if="{{loadingFailed}}" class="nomore">数据加载失败,请重试</view>
     </view>
     </scroll-view>

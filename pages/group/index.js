@@ -21,7 +21,7 @@ Component({
     triggered: false,
     hiddenEdit: true,
     listData: [],
-    page: 1,
+    page: 0,
     loading: false,
     noMore: false,
     loadingFailed: false,
@@ -29,10 +29,10 @@ Component({
     isAdmin: 1,
   },
   ready: function (options) {
-    this.init()
+    this.init(false, 1)
   },
   methods: {
-    init(refresh) {
+    init(refresh, _page) {
       if(refresh) {
         this.setData({
           listData: [],
@@ -40,14 +40,17 @@ Component({
           loading: true
         })
       }
+      this.setData({
+        page: _page
+      })
       let dy = new Dynamic();
       dy.dType = 1;
       dy.status = 1;
       if(!this.data.noMore){
-        let page = new pageHelper(this.data.page, 10, dy);
+        let page = new pageHelper(_page, 10, dy);
         database.find('dynamic', page).then(res => {
           // 获取对应用户信息
-          let _data = [...res.data, ...this.data.listData];
+          let _data = [ ...this.data.listData, ...res.data];
           _data.map((item, index) => {
             // 格式化时间
             if (typeof (item.cTime)!= 'string'){
@@ -95,14 +98,15 @@ Component({
       return data;
     },
     // 滚动到底部
-    onScrollToLower() {
+    onScrollToLower(e) {
       //到底啦，加载下一页
       if (!this.data.noMore) {
         this.setData({
-          loading: true,
-          page: this.data.page++
+          loading: true
         })
-        this.init();
+        let _page = Number(e.currentTarget.dataset.page);
+        _page++;
+        this.init(false, _page);
       } else {
         setTimeout(() => {
           this.setData({
