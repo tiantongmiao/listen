@@ -1,8 +1,12 @@
 <!--index.wxml-->
 <view class="container">
-    <button class="block-btn plus mb10" data-editType="add" bindtap="onShowEdit">
-      <van-icon class="icon-plus" name="plus" />留言</button>
-    <scroll-view scroll-y="true" style="width: 100%; margin-top:10px;margin-bottom:50px;"
+    <button class="block-btn plus mb10" 
+      data-editType="add" bindtap="onShowEdit">
+      <van-icon class="icon-plus" name="plus" />
+      留言
+    </button>
+    <scroll-view scroll-y="true" 
+      style="width: 100%; min-height: 200px; margin-top:10px;overflow: auto;"
       refresher-enabled="{{true}}" 
       refresher-triggered="{{triggered}}"  
       refresher-threshold="100"
@@ -31,20 +35,12 @@
             <!-- 管理员才有的删除功能 -->
             <van-icon class="font-size-20" data-id="{{item._id}}" name="close" bind:click="onDel" />
           </view>
-          <!-- 消息展示区 -->
-          <view class="message-view"  wx:if="{{item.messageList && item.messageList.length > 0}}">
-            <!-- 消息循环 -->
-            <view class="flex-row message-view-text" wx:for="{{item.messageList}}" wx:key="cindex" wx:for-item="citem" wx:for-index="cindex">
-              <view>{{citem.name}}：</view>
-              <view class="flex-1 text-left">{{citem.message}}</view>
-            </view>
-          </view>
         </van-cell>
       </view>
     <view style="text-align: center;margin: 10px 10px 20px;">
       <view wx:if="{{loading}}" class="nomore">加载中...</view>
       <view wx:if="{{noMore && !loading}}" class="nomore">没有更多了</view>
-      <view bindtap="onScrollToLower" class="loadmore" wx:if="{{!noMore && !loading}}">加载更多</view>
+      <view bindtap="onScrollToLower"data-page="{{page}}" class="loadmore" wx:if="{{!noMore && !loading}}">加载更多</view>
       <view wx:if="{{loadingFailed}}" class="nomore">数据加载失败,请重试</view>
     </view>
     </scroll-view>
@@ -55,7 +51,7 @@
       <!--自动隐藏action-sheet-->
       <action-sheet-cancel bindtap="onSaveAdd">
         确认
-        <view style='height:100rpx;'></view>
       </action-sheet-cancel>
     </action-sheet>
+    <van-dialog id="van-dialog" />
 </view>

@@ -11,7 +11,7 @@
           <view>{{listObj.cTime}}</view>
         </view>
       </view>
-      <view class="text-left break-all">{{listObj.dContent}}</view>
+      <view class="text-left break-all">{{listObj.mContent}}</view>
       <view class="text-right">
         <van-icon class="font-size-20 pr10" name="chat-o" data-showedit="{{item.showEdit}}" data-index="{{index}}"
           data-id="{{item._id}}" data-esitType="editNote" data-type="replay" bind:click="onShowEdit" />

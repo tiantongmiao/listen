@@ -4,6 +4,7 @@ const User = require('../../module/model/User.js')
 const Replay = require('../../module/model/Replay.js')
 const pageHelper = require('../../module/pagehelper/PageHelper.js')
 const utils = require('../../utils/util.js')
+import Dialog from '../../vant-weapp/dialog/dialog'
 var app = getApp();
 Component({
   pageLifetimes: {
@@ -30,6 +31,8 @@ Component({
   },
   ready: function (options) {
     this.init(false, 1)
+    
+console.log(app.globalData['userInfo'])
   },
   methods: {
     init(refresh, _page) {
@@ -143,21 +146,26 @@ Component({
     // 删除功能
     onDel(e) {
       // 删除动态评论
-      let replay = new Replay();
-      replay.rTarget = e.currentTarget.dataset.id
-      database.del('replay', replay).then(res => {
-        // 删除动态
-        let dy = new Dynamic()
-        dy._id = e.currentTarget.dataset.id
-        database.del('dynamic', dy).then(res => {
-          // 重新加载页面数据
-          this.init(true)
-        }).catch(err => {
-          console.log(err)
+      Dialog.confirm({
+        message: '确定删除？',
+      }).then(() => {
+          // on confirm
+          let replay = new Replay();
+          replay.rTarget = e.currentTarget.dataset.id
+          database.del('replay', replay).then(res => {
+            // 删除动态
+            let dy = new Dynamic()
+            dy._id = e.currentTarget.dataset.id
+            database.del('dynamic', dy).then(res => {
+              // 重新加载页面数据
+              this.init(true)
+            }).catch(err => {
+              console.log(err)
+            })
+          }).catch(err => {
+            console.log(err)
+          })
         })
-      }).catch(err => {
-        console.log(err)
-      })
     },
     onShowEditChange() {
       this.setData({

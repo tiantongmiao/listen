@@ -4,6 +4,7 @@ const User = require('../../module/model/User.js')
 const Replay = require('../../module/model/Replay.js')
 const pageHelper = require('../../module/pagehelper/PageHelper.js')
 const utils = require('../../utils/util.js')
+import Dialog from '../../vant-weapp/dialog/dialog'
 var app = getApp();
 Component({
   data: {
@@ -12,17 +13,17 @@ Component({
     triggered: false,
     hiddenEdit: true,
     listData: [],
-    page: 1,
+    page: 0,
     loading: false,
     noMore: false,
     loadingFailed: false,
     inputType: '',
   },
   ready: function (options) {
-    this.init()
+    this.init(false, 1)
   },
   methods: {
-    init(refresh) {
+    init(refresh, _page) {
       if(refresh) {
         this.setData({
           listData: [],
@@ -30,13 +31,16 @@ Component({
           loading: true
         })
       }
+      this.setData({
+        page: _page
+      })
       let mboard = new MBoard();
       mboard.status = 1;
       if(!this.data.noMore){
-        let page = new pageHelper(this.data.page, 10, mboard);
+        let page = new pageHelper(_page, 10, mboard);
         database.find('mboard', page).then(res => {
           // 获取对应用户信息
-          let _data = [...res.data, ...this.data.listData];
+          let _data = [ ...this.data.listData, ...res.data];
           _data.map((item, index) => {
             // 格式化时间
             if (typeof (item.cTime)!= 'string'){
@@ -84,14 +88,16 @@ Component({
       return data;
     },
     // 滚动到底部
-    onScrollToLower() {
+    onScrollToLower(e) {
       //到底啦，加载下一页
       if (!this.data.noMore) {
         this.setData({
           loading: true,
           page: this.data.page++
         })
-        this.init();
+        let _page = Number(e.currentTarget.dataset.page);
+        _page++;
+        this.init(false, _page);
       } else {
         setTimeout(() => {
           this.setData({
@@ -116,7 +122,7 @@ Component({
     // 展示评论编辑区
     onShowEdit(e) {
       if (e.currentTarget.dataset.type) {
-        const url = '/pages/detail/index?_id=' + e.currentTarget.dataset.id
+        const url = '/pages/detailReplay/index?_id=' + e.currentTarget.dataset.id
         wx.redirectTo({ url })
       } else {
         this.setData({
@@ -127,21 +133,26 @@ Component({
     },
     // 删除功能
     onDel(e) {
-      // 删除动态评论
-      let replay = new Replay();
-      replay.mTargetId = e.currentTarget.dataset.id
-      database.del('replay', replay).then(res => {
-        // 删除动态
-        let mboard = new MBoard()
-        mboard._id = e.currentTarget.dataset.id
-        database.del('mboard', mboard).then(res => {
-          // 重新加载页面数据
-          this.init(true)
+      Dialog.confirm({
+        message: '确定删除？',
+      }).then(() => {
+        // on confirm
+        // 删除动态评论
+        let replay = new Replay();
+        replay.mTargetId = e.currentTarget.dataset.id
+        database.del('replay', replay).then(res => {
+          // 删除动态
+          let mboard = new MBoard()
+          mboard._id = e.currentTarget.dataset.id
+          database.del('mboard', mboard).then(res => {
+            // 重新加载页面数据
+            this.init(true)
+          }).catch(err => {
+            console.log(err)
+          })
         }).catch(err => {
           console.log(err)
         })
-      }).catch(err => {
-        console.log(err)
       })
     },
     onShowEditChange() {
