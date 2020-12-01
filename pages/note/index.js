@@ -13,7 +13,7 @@ Component({
     triggered: false,
     hiddenEdit: true,
     listData: [],
-    page: 0,
+    paged: 0,
     loading: false,
     noMore: false,
     loadingFailed: false,
@@ -32,13 +32,13 @@ Component({
         })
       }
       this.setData({
-        page: _page
+        paged: _page
       })
       let mboard = new MBoard();
       mboard.status = 1;
       if(!this.data.noMore){
-        let page = new pageHelper(_page, 10, mboard);
-        database.find('mboard', page).then(res => {
+        let paged = new pageHelper(_page, 10, mboard);
+        database.find('mboard', paged).then(res => {
           // 获取对应用户信息
           let _data = [ ...this.data.listData, ...res.data];
           _data.map((item, index) => {
@@ -79,8 +79,8 @@ Component({
       let data = {};
       let user = new User();
       user._openid = id;
-      let page = new pageHelper(1, 1, user);
-      await database.find('user', page).then(res => {
+      let paged = new pageHelper(1, 1, user);
+      await database.find('user', paged).then(res => {
         data = res.data[0]
       }).catch(err => {
         console.log(err)
@@ -93,7 +93,7 @@ Component({
       if (!this.data.noMore) {
         this.setData({
           loading: true,
-          page: this.data.page++
+          paged: this.data.paged++
         })
         let _page = Number(e.currentTarget.dataset.page);
         _page++;
@@ -160,10 +160,6 @@ Component({
         hiddenEdit: !this.data.hiddenEdit
       })
     },
-    obtainInput() {
-      // 点击完成时， 触发 confirm 事件
-      this.onSaveAdd();
-    },
     bindinput(e) {
       // 输入框失去焦点
       this.setData({
@@ -179,7 +175,7 @@ Component({
         this.setData({
           noMore:false,
           listData: [],
-          page: 1
+          paged: 1
         })
         this.init()
       }).catch(err => {

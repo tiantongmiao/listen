@@ -42,7 +42,7 @@
   <action-sheet hidden="{{hiddenEdit}}" bindchange="onShowEditChange">
     <action-sheet-item>
       <textarea type="text" name="editInput" value="{{ editInput }}" auto-focus="true" class="edit-view-textarea"
-        placeholder="留下你想说的话..." bindconfirm="obtainInput" bindinput="bindinput" />
+        placeholder="留下你想说的话..." bindinput="bindinput" />
       </action-sheet-item>
       <!--自动隐藏action-sheet-->
       <action-sheet-cancel bindtap="onSaveAdd">

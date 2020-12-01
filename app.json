@@ -3,8 +3,9 @@
     "pages/group/index",
     "pages/me/index",
     "pages/auth/index",
-    "pages/detail/index",
     "pages/meedit/index",
+    "pages/detail/index",
+    "pages/detailReplay/index",
     "pages/note/index",
     "custom-tab-bar/index"
   ],
@@ -41,6 +42,7 @@
     "van-cell-group": "vant-weapp/cell-group/index",
     "van-field": "vant-weapp/field/index",
     "van-button": "vant-weapp/button/index",
-    "van-popup": "vant-weapp/popup/index"
+    "van-popup": "vant-weapp/popup/index",
+    "van-dialog": "vant-weapp/dialog/index"
   }
 }

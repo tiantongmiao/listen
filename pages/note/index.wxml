@@ -1,57 +1,47 @@
 <!--index.wxml-->
+<div class="add-btn" data-editType="add" bindtap="onShowEdit">
+  <van-icon class="icon-plus" name="plus" />
+</div>
 <view class="container">
-    <button class="block-btn plus mb10" 
-      data-editType="add" bindtap="onShowEdit">
-      <van-icon class="icon-plus" name="plus" />
-      留言
-    </button>
-    <scroll-view scroll-y="true" 
-      style="width: 100%; min-height: 200px; margin-top:10px;overflow: auto;"
-      refresher-enabled="{{true}}" 
-      refresher-triggered="{{triggered}}"  
-      refresher-threshold="100"
-      bindrefresherrefresh="onRefresh">
-      <!-- 循环的列表 -->
-      <view class="card" wx:for="{{listData}}" wx:key="index">
-        <van-cell>
-          <view class="clearfix">
-            <view class="fl pr10">
-              <image class="userImg" src='{{item.uWxImg}}'></image>
-            </view>
-            <view class="fl text-left">
-              <view>{{item.uName}}</view>
-              <view>{{item.cTime}}</view>
-            </view>
+  <scroll-view scroll-y="true" class="scroll-wrap" refresher-enabled="{{true}}" refresher-triggered="{{triggered}}"
+    refresher-threshold="100" bindrefresherrefresh="onRefresh">
+    <!-- 循环的列表 -->
+    <view class="card" wx:for="{{listData}}" wx:key="index">
+      <van-cell>
+        <view class="clearfix">
+          <view class="fl pr10">
+            <image class="userImg" src='{{item.uWxImg}}'></image>
           </view>
-          <view class="text-left break-all">{{item.mContent}}</view>
-          <view class="text-right">
-            <van-icon class="font-size-20 pr10" name="chat-o" 
-            data-showedit="{{item.showEdit}}" 
-            data-index="{{index}}" 
-            data-id="{{item._id}}" 
-            data-esitType="editNote" 
-            data-type="replay" 
-            bind:click="onShowEdit" />
-            <!-- 管理员才有的删除功能 -->
-            <van-icon class="font-size-20" data-id="{{item._id}}" name="close" bind:click="onDel" />
+          <view class="fl text-left">
+            <view>{{item.uName}}</view>
+            <view>{{item.cTime}}</view>
           </view>
-        </van-cell>
-      </view>
+        </view>
+        <view class="text-left break-all">{{item.mContent}}</view>
+        <view class="text-right">
+          <van-icon class="font-size-20 pr10" name="chat-o" data-showedit="{{item.showEdit}}" data-index="{{index}}"
+            data-id="{{item._id}}" data-esitType="editNote" data-type="replay" bind:click="onShowEdit" />
+          <!-- 管理员才有的删除功能 -->
+          <van-icon class="font-size-20" data-id="{{item._id}}" name="close" bind:click="onDel" />
+        </view>
+      </van-cell>
+    </view>
     <view style="text-align: center;margin: 10px 10px 20px;">
       <view wx:if="{{loading}}" class="nomore">加载中...</view>
       <view wx:if="{{noMore && !loading}}" class="nomore">没有更多了</view>
-      <view bindtap="onScrollToLower"data-page="{{page}}" class="loadmore" wx:if="{{!noMore && !loading}}">加载更多</view>
+      <view bindtap="onScrollToLower" data-page="{{page}}" class="loadmore" wx:if="{{!noMore && !loading}}">加载更多</view>
       <view wx:if="{{loadingFailed}}" class="nomore">数据加载失败,请重试</view>
     </view>
-    </scroll-view>
-    <action-sheet hidden="{{hiddenEdit}}" bindchange="onShowEditChange">
-      <action-sheet-item>
-        <textarea type="text" name="editInput" value="{{ editInput }}" auto-focus="true" class="edit-view-textarea" placeholder="留下你想说的话..." bindconfirm="obtainInput" bindinput="bindinput" />
-      </action-sheet-item>
-      <!--自动隐藏action-sheet-->
-      <action-sheet-cancel bindtap="onSaveAdd">
-        确认
-      </action-sheet-cancel>
-    </action-sheet>
-    <van-dialog id="van-dialog" />
+  </scroll-view>
 </view>
+<action-sheet hidden="{{hiddenEdit}}" bindchange="onShowEditChange">
+  <action-sheet-item>
+    <textarea type="text" name="editInput" value="{{ editInput }}" auto-focus="true" class="edit-view-textarea"
+      placeholder="留下你想说的话..." bindinput="bindinput" />
+    </action-sheet-item>
+  <!--自动隐藏action-sheet-->
+  <action-sheet-cancel bindtap="onSaveAdd">
+    确认
+  </action-sheet-cancel>
+</action-sheet>
+<van-dialog id="van-dialog" />

@@ -14,7 +14,7 @@ Page({
     messageList: [],
     listObj: {},
     oid: '',
-    page: 0,
+    paged: 0,
     loading: false,
     noMore: false,
     loadingFailed: false,
@@ -32,8 +32,8 @@ Page({
   getMBoard() {
     let mboard = new MBoard()
     mboard._id = this.data.oid;
-    let page = new pageHelper(1, 1, mboard);
-    database.find('mboard', page).then(res => {
+    let paged = new pageHelper(1, 1, mboard);
+    database.find('mboard', paged).then(res => {
       let _obj = res.data[0]
       _obj.cTime = utils.formatTime(_obj.cTime)
       this.setData({
@@ -57,15 +57,15 @@ Page({
       })
     }
     this.setData({
-      page: _page
+      paged: _page
     })
     if(!this.data.noMore){
       let replay = new Replay()
       replay.rTarget = this.data.oid
       replay.status = 1
       replay.rType = 2
-      let page = new pageHelper(_page, 10, replay);
-      database.find('replay', page).then(res => {
+      let paged = new pageHelper(_page, 10, replay);
+      database.find('replay', paged).then(res => {
         console.log(res)
         let _arr = [...this.data.messageList,...res.data]
         this.setData({
@@ -105,8 +105,8 @@ Page({
     let data = {};
     let user = new User();
     user._openid = id;
-    let page = new pageHelper(1, 1, user);
-    await database.find('user', page).then(res => {
+    let paged = new pageHelper(1, 1, user);
+    await database.find('user', paged).then(res => {
       data = res.data[0]
     }).catch(err => {
       console.log(err)
@@ -174,10 +174,6 @@ Page({
       hiddenEdit: !this.data.hiddenEdit
     })
   },
-  obtainInput() {
-    // 点击完成时， 触发 confirm 事件
-    this.onSaveAdd();
-  },
   bindinput(e) {
     // 输入框失去焦点
     this.setData({
@@ -211,8 +207,8 @@ Page({
       mboard.dType = 1;
       mboard.status = 1;
       if(!this.data.noMore){
-        let page = new pageHelper(this.data.page, 10, mboard);
-        database.find('mboard', page).then(res => {
+        let paged = new pageHelper(this.data.paged, 10, mboard);
+        database.find('mboard', paged).then(res => {
           // 获取对应用户信息
           let _data = [...res.data, ...this.data.listData];
           
@@ -229,8 +225,8 @@ Page({
       replay.rTarget = id
       replay.status = 1
       replay.rType = 2
-      let page = new pageHelper(1, 1, replay);
-      await database.find('replay', page).then(res => {
+      let paged = new pageHelper(1, 1, replay);
+      await database.find('replay', paged).then(res => {
         // console.log(res)
         //data = res.data[0]
       }).catch(err => {

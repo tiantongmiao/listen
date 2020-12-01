@@ -22,7 +22,7 @@ Component({
     triggered: false,
     hiddenEdit: true,
     listData: [],
-    page: 0,
+    paged: 0,
     loading: false,
     noMore: false,
     loadingFailed: false,
@@ -31,8 +31,6 @@ Component({
   },
   ready: function (options) {
     this.init(false, 1)
-    
-console.log(app.globalData['userInfo'])
   },
   methods: {
     init(refresh, _page) {
@@ -44,14 +42,14 @@ console.log(app.globalData['userInfo'])
         })
       }
       this.setData({
-        page: _page
+        paged: _page
       })
       let dy = new Dynamic();
       dy.dType = 1;
       dy.status = 1;
       if(!this.data.noMore){
-        let page = new pageHelper(_page, 10, dy);
-        database.find('dynamic', page).then(res => {
+        let paged = new pageHelper(_page, 10, dy);
+        database.find('dynamic', paged).then(res => {
           // 获取对应用户信息
           let _data = [ ...this.data.listData, ...res.data];
           _data.map((item, index) => {
@@ -92,8 +90,8 @@ console.log(app.globalData['userInfo'])
       let data = {};
       let user = new User();
       user._openid = id;
-      let page = new pageHelper(1, 1, user);
-      await database.find('user', page).then(res => {
+      let paged = new pageHelper(1, 1, user);
+      await database.find('user', paged).then(res => {
         data = res.data[0]
       }).catch(err => {
         console.log(err)
@@ -172,10 +170,6 @@ console.log(app.globalData['userInfo'])
         hiddenEdit: !this.data.hiddenEdit
       })
     },
-    obtainInput() {
-      // 点击完成时， 触发 confirm 事件
-      this.onSaveAdd();
-    },
     bindinput(e) {
       // 输入框失去焦点
       this.setData({
@@ -192,7 +186,7 @@ console.log(app.globalData['userInfo'])
         this.setData({
           noMore:false,
           listData: [],
-          page: 1
+          paged: 1
         })
         this.init()
       }).catch(err => {
