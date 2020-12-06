@@ -5,6 +5,7 @@
   color: #333;
   height: 100vh;
   overflow: hidden;
+  background-color: #dff5d2;
 }
 .clearfix:after {
   content: '';
@@ -32,6 +33,9 @@
 .pb20{
   padding-bottom: 20px
 }
+.pt10{
+  padding-top: 10px;
+}
 .mt50{
   margin-top: 50px;
 }
@@ -42,6 +46,10 @@
   padding: 10px;
   font-size: 14px;
   color: #333;
+}
+.card .van-cell{
+  background-color: #f1f7f0;
+  box-shadow: 0 3px 10px #a4b7ae;
 }
 .card .userImg{
   width: 50px;
@@ -111,8 +119,8 @@
   font-size: 16px;
 }
 .add-btn{
-  border: 1px solid #07c160;
-  color: #07c160;
+  border: 1px solid #edf3f0;
+  color: #edf3f0;
   width: 40px;
   height: 40px;
   display: flex;
@@ -123,8 +131,8 @@
   border-radius: 50%;
   align-items: center;
   justify-content: center;
-  background: #fff;
-  box-shadow: 0px 0px 10px #aba6a6;
+  background: #7eaf86;
+  box-shadow: 0px 0px 10px #7a827d;
 }
 .scroll-wrap{
   width: 100%;
@@ -132,4 +140,19 @@
   overflow: auto;
   box-sizing: border-box;
   padding-bottom: 50px;
+}
+.van-tabbar-item--active {
+  font-weight: bold;
+}
+.relative{
+  position: relative;
+}
+.app-del{
+  position: absolute;
+    top: -7px;
+    right: -4px;
+    color: #87ad92;
+}
+.text-link{
+  color: #2d4838;
 }

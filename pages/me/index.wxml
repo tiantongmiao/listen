@@ -1,6 +1,6 @@
 <!--index.wxml-->
 <view class="container">
-  <view class="text-center pb20">
+  <view class="text-center pb20 pt10">
     <image class="userImg" src='{{uWxImg}}'></image>
     <view class="break-all">{{uName}}</view>
     <view class="break-all uinformation">{{uInfomation}}</view>

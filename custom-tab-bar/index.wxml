@@ -1,7 +1,7 @@
 <!--miniprogram/custom-tab-bar/index.wxml-->
 <van-tabbar
   active="{{ active }}"
-  active-color="#07c160"
+  active-color="{{selectedColor}}"
   inactive-color="#000"
   bind:change="onChange"
 >

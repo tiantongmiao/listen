@@ -1,7 +1,7 @@
 <!--index.wxml-->
-<view class="container">
+<view class="container auth-container">
     <!-- 未授权展示 -->
-    <button type="primary" 
+    <button type="primary" class="auth-btn"
     open-type="getUserInfo" 
     bindgetuserinfo="bindGetUserInfo"
     >授权</button>

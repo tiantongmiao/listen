@@ -3,6 +3,7 @@
   background: #ebedf0;
   border-radius: 10px;
   padding: 10px;
+  height: -webkit-fill-available;
 }
 .plus{
   background-color: #fff;

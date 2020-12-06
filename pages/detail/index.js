@@ -66,12 +66,10 @@ Page({
       replay.rType = 2
       let paged = new pageHelper(_page, 10, replay);
       database.find('replay', paged).then(res => {
-        console.log(res)
         let _arr = [...this.data.messageList,...res.data]
         this.setData({
           messageList: _arr
         })
-        console.log(_arr)
         _arr.map((item, index) => {
           this.getUser(item._openid).then(_users => {
             item['uName'] = _users.uName;
@@ -84,7 +82,6 @@ Page({
           return item;
         });
         database.count('replay', replay).then(res => {
-          console.log(this.data.messageList.length)
           if (this.data.messageList.length < res.total) {
             this.setData({
               noMore: false,

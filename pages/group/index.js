@@ -60,11 +60,46 @@ Component({
             this.getUser(item._openid).then(_users => {
               item['uName'] = _users.uName;
               item['uWxImg'] = _users.uWxImg;
-              var obj = "listData[" + index + "]";
+              let obj = "listData[" + index + "]";
               this.setData({
                 [obj]: item
               })
             });
+            this.getReplay(item._id).then(_replay => {
+              item['messageList'] = _replay
+              let mlist = "listData[" + index + "]";
+              this.setData({
+                [mlist]: item
+              })
+              _replay.map((_item, uindex) => {
+                this.getUser(_item._openid).then(_userd => {
+                  item.messageList[uindex]['uName'] = _userd.uName;
+                  let ulist = "listData[" + index + "]"
+                  this.setData({
+                    [ulist]: item
+                  })
+                })
+              })
+            })
+            let replay = new Replay()
+            replay.rTarget = item._id
+            replay.status = 1
+            replay.rType = 2
+            database.count('replay', replay).then(res => {
+              if (res.total > 3) {
+                item['showMoreReplay'] = true
+                let s = "listData[" + index + "]";
+                this.setData({
+                  [s]: item
+                })
+              } else {
+                item['showMoreReplay'] = false
+                let s = "listData[" + index + "]";
+                this.setData({
+                  [s]: item
+                })
+              }
+            })
             return item;
           });
           database.count('dynamic', dy).then(res => {
@@ -93,6 +128,21 @@ Component({
       let paged = new pageHelper(1, 1, user);
       await database.find('user', paged).then(res => {
         data = res.data[0]
+      }).catch(err => {
+        console.log(err)
+      })
+      return data;
+    },
+    // 获取回复
+    async getReplay(id) {
+      let data = {};
+      let replay = new Replay();
+      replay.rTarget = id
+      replay.status = 1
+      replay.rType = 2
+      let paged = new pageHelper(1, 3, replay);
+      await database.find('replay', paged).then(res => {
+        data = res.data
       }).catch(err => {
         console.log(err)
       })

@@ -7,7 +7,7 @@
     refresher-threshold="100" bindrefresherrefresh="onRefresh">
     <!-- 循环的列表 -->
     <view class="card" wx:for="{{listData}}" wx:key="index">
-      <van-cell>
+      <van-cell class="relative">
         <view class="clearfix">
           <view class="fl pr10">
             <image class="userImg" src='{{item.uWxImg}}'></image>
@@ -18,12 +18,29 @@
           </view>
         </view>
         <view class="text-left break-all">{{item.dContent}}</view>
-        <view class="text-right">
-          <van-icon class="font-size-20 pr10" name="chat-o" data-showedit="{{item.showEdit}}" data-index="{{index}}"
-            data-id="{{item._id}}" data-esitType="editNote" data-type="replay" bind:click="onShowEdit" />
-          <!-- 管理员才有的删除功能 -->
-          <van-icon class="font-size-20" data-id="{{item._id}}" name="close" bind:click="onDel" />
+        <!-- 消息循环 -->
+        <view class="flex-row"
+            wx:for="{{item.messageList}}" wx:key="cindex" 
+            wx:for-item="citem"
+            wx:for-index="cindex">
+            <view>{{citem.uName}}：</view>
+            <view class="flex-1 text-left break-all">{{citem.rContent}}</view>
         </view>
+        <view wx:if="{{item.showMoreReplay}}"
+          data-showedit="{{item.showEdit}}" 
+          data-index="{{index}}"
+          data-id="{{item._id}}" 
+          data-esitType="editNote" 
+          data-type="replay" 
+          bindtap="onShowEdit"
+          class="text-link"
+          >
+          查看更多回复>>
+        </view>
+        <!-- 管理员才有的删除功能 -->
+        <van-icon class="font-size-20 app-del"
+          data-id="{{item._id}}" 
+          name="clear" bind:click="onDel" />
       </van-cell>
     </view>
     <view style="text-align: center;margin: 10px 10px 20px;">

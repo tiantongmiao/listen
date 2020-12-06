@@ -1,14 +1,15 @@
 /**index.wxss**/
-.message-view{
-  background: #ebedf0;
-  border-radius: 10px;
-  padding: 10px;
+.auth-container{
+  display: flex;
+  align-items: center;
 }
-.plus{
-  background-color: #fff;
-  border: 1px solid #07c160;
-  color: #07c160;
-}
-.icon-plus{
-  vertical-align: middle
+.auth-container .auth-btn{
+  height: 150px;
+  width: 150px;
+  background-color: #5aa263;
+  border-radius: 50%;
+  box-shadow: 0px 0px 15px #72887a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
