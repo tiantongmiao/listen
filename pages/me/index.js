@@ -1,6 +1,7 @@
 const database = require('../../module/controller/BaseConstroller.js')
 const pageHelper = require('../../module/pagehelper/PageHelper.js')
 const User = require('../../module/model/User.js')
+var app = getApp();
 Component({
   pageLifetimes: {
     show() {
