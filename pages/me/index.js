@@ -14,7 +14,8 @@ Component({
   data: {
     uName: '',
     uWxImg: '',
-    uInfomation: ''
+    uInfomation: '',
+    isAdmin: false,
   },
   ready: function (options) {
     var that = this;
@@ -23,13 +24,15 @@ Component({
      */
     database.find('user', new pageHelper(1, 1, { _openid: '{openid}' }))
       .then(res => {
-        console.log(res)
         this.setData({
           uName: res.data[0].uName,
           uWxImg: res.data[0].uWxImg,
           uInfomation: res.data[0].uInfomation,
         })
       })
+    this.setData({
+      isAdmin: app.globalData.userInfo.uType == 2
+    })
   },
   methods: {
     toEdit() {

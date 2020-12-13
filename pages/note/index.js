@@ -36,7 +36,7 @@ Component({
       })
       let mboard = new MBoard();
       mboard.status = 1;
-      if(app.globalData.userInfo.uType != 1){
+      if(app.globalData.userInfo.uType != 2){
         mboard._openid = '{openid}'
       }
       if(!this.data.noMore){
