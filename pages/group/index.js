@@ -30,6 +30,17 @@ Component({
     isAdmin: 1,
   },
   ready: function (options) {
+    if(app.globalData.userInfo == null) {
+      app.userInfoReadyCallback = () => {
+        this.setData({
+          isAdmin: app.globalData.userInfo.uType == 2
+        })
+      }
+    } else{
+      this.setData({
+        isAdmin: app.globalData.userInfo.uType == 2
+      })
+    }
     this.init(false, 1)
   },
   methods: {

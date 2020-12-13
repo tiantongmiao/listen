@@ -46,6 +46,7 @@
         </view>
         <!-- 管理员才有的删除功能 -->
         <van-icon class="font-size-20 app-del"
+          wx:if="{{isAdmin}}"
           data-id="{{item._id}}" 
           name="clear" bind:click="onDel" />
       </van-cell>

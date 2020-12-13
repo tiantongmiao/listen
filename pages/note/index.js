@@ -18,8 +18,20 @@ Component({
     noMore: false,
     loadingFailed: false,
     inputType: '',
+    isAdmin: false,
   },
   ready: function (options) {
+    if(app.globalData.userInfo == null) {
+      app.userInfoReadyCallback = () => {
+        this.setData({
+          isAdmin: app.globalData.userInfo.uType == 2
+        })
+      }
+    } else{
+      this.setData({
+        isAdmin: app.globalData.userInfo.uType == 2
+      })
+    }
     this.init(false, 1)
   },
   methods: {
@@ -36,6 +48,7 @@ Component({
       })
       let mboard = new MBoard();
       mboard.status = 1;
+      console.log(app.globalData.userInfo)
       if(app.globalData.userInfo.uType != 2){
         mboard._openid = '{openid}'
       }

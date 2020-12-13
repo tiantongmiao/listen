@@ -40,18 +40,17 @@ App({
               this.globalData.db.collection('user')
                 .where({_openid: '{openid}'})
                 .get().then(res => {
-                  console.log(res)
                   if(res.data && res.data.length > 0) {
                     let _user = res.data[0]
                     this.globalData.userInfo = { ...this.globalData.userInfo,...res.data[0]}
+                    // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+                    // 所以此处加入 callback 以防止这种情况
+                    if (this.userInfoReadyCallback) {
+                      this.userInfoReadyCallback(res)
+                    }
                   }
                 })
 
-              // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-              // 所以此处加入 callback 以防止这种情况
-              if (this.userInfoReadyCallback) {
-                this.userInfoReadyCallback(res)
-              }
             }
           })
         } else {

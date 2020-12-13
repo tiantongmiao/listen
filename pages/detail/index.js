@@ -19,8 +19,20 @@ Page({
     noMore: false,
     loadingFailed: false,
     inputType: '',
+    isAdmin: false,
   },
   onLoad(options) {
+    if(app.globalData.userInfo == null) {
+      app.userInfoReadyCallback = () => {
+        this.setData({
+          isAdmin: app.globalData.userInfo.uType == 2
+        })
+      }
+    } else{
+      this.setData({
+        isAdmin: app.globalData.userInfo.uType == 2
+      })
+    }
     // options._id ---动态或者留言的_id
     this.setData({
       oid: options._id
