@@ -10,7 +10,7 @@ class User {
 
   constructor1(){}
 
-  constructor2(_id, _openid, uName, uLoginName, uPwd, uWxId, uWxName, uWxImg, uMobileNum, UQqNum, uEmail, uInformation, uGender, cTime, uTime, status) {
+  constructor2(_id, _openid, uName, uLoginName, uPwd, uWxId, uWxName, uWxImg, uMobileNum, UQqNum, uEmail, uInformation, uGender, cTime, uTime, uType, status) {
     this._id = _id
     this._openid = _openid
     this.uName = uName
@@ -26,6 +26,7 @@ class User {
     this.uGender = uGender
     this.cTime = cTime
     this.uTime = uTime
+    this.uType = uType ? uType : 1
     this.status = status
   }
 }

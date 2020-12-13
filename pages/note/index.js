@@ -36,6 +36,9 @@ Component({
       })
       let mboard = new MBoard();
       mboard.status = 1;
+      if(app.globalData.userInfo.uType != 1){
+        mboard._openid = '{openid}'
+      }
       if(!this.data.noMore){
         let paged = new pageHelper(_page, 10, mboard);
         database.find('mboard', paged).then(res => {

@@ -36,10 +36,13 @@ const search =  (table, page) => {
 }
 
 const remove = (table, where) => {
-  where = {...where, ...{_openid: '{openid}'}}
-  return db.collection(table)
-  .where(where)
-  .remove()
+  return wx.cloud.callFunction({
+    name: 'delete',
+    data: {
+      table, 
+      where
+    }
+  })
 }
 
 const count = (table, where) => {

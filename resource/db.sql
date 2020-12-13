@@ -37,7 +37,7 @@ CREATE TABLE `mboard` (
   `M_CONTENT` varchar(512) DEFAULT NULL COMMENT '留言内容',
   `M_CTIME` datetime DEFAULT NULL COMMENT '创建时间',
   `M_UTIME` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  `M_STATUS` int(1) DEFAULT NULL COMMENT '状态(0: 删除, 1: 激活, 违规)',
+  `M_STATUS` int(1) DEFAULT NULL COMMENT '状态(0: 删除, 1: 激活, 2违规)',
   PRIMARY KEY (`M_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='留言板';
 --回复表
