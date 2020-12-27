@@ -43,6 +43,7 @@
     "van-field": "vant-weapp/field/index",
     "van-button": "vant-weapp/button/index",
     "van-popup": "vant-weapp/popup/index",
-    "van-dialog": "vant-weapp/dialog/index"
+    "van-dialog": "vant-weapp/dialog/index",
+    "van-swipe-cell": "vant-weapp/swipe-cell/index"
   }
 }

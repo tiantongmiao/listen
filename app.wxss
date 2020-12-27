@@ -68,6 +68,9 @@
 .display-block{
   display: block;
 }
+.display-inline-block{
+  display: inline-block;
+}
 .display-none{
   display: none;
 }
@@ -92,6 +95,8 @@
 .message-view-text{
   font-size: 14px;
   color: #999;
+  padding: 10px;
+  background: #c6e2c9;
 }
 .font-size-20{
   font-size: 20px;
@@ -155,4 +160,16 @@
 }
 .text-link{
   color: #2d4838;
+}
+.w100{
+  width: 100%;
+}
+.swipe-del{
+  background: #0f5811;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 65px;
+  justify-content: center;
 }

@@ -13,11 +13,11 @@
       </view>
       <view class="text-left break-all">{{listObj.mContent}}</view>
       <view class="text-right">
-        <van-icon class="font-size-20 pr10" name="chat-o" data-showedit="{{item.showEdit}}" data-index="{{index}}"
-          data-id="{{item._id}}" data-esitType="editNote" data-type="replay" bind:click="onShowEdit" />
+        <van-icon class="font-size-20 pr10" name="chat-o" data-index="{{index}}"
+          data-id="{{listObj._id}}" data-esitType="editNote" data-type="replay" bind:click="onShowEdit" />
         <!-- 管理员才有的删除功能 -->
         <van-icon class="font-size-20" wx:if="{{isAdmin}}"
-          data-id="{{item._id}}" name="close" bind:click="onDel" />
+          data-id="{{listObj._id}}" name="close" bind:click="onDel" />
       </view>
     </view>
     
@@ -27,10 +27,17 @@
       refresher-enabled="{{true}}" refresher-triggered="{{triggered}}" refresher-threshold="100"
       bindrefresherrefresh="onRefresh">
       <!-- 消息循环 -->
-      <view class="flex-row message-view-text" wx:for="{{messageList}}" wx:key="cindex" wx:for-item="citem"
+      <view wx:for="{{messageList}}" wx:key="cindex" wx:for-item="citem"
         wx:for-index="cindex">
-        <view>{{citem.uName}}：</view>
-        <view class="flex-1 text-left break-all">{{citem.rContent}}</view>
+        <van-swipe-cell class="w100" id="swipe-cell" right-width="{{ 65 }}" data-replayid="{{citem._id}}" async-close bind:close="onClose">
+          <van-cell-group>
+            <view class="flex-row message-view-text">
+              <view>{{citem.uName}}：</view>
+              <view class="flex-1 text-left break-all">{{citem.rContent}}</view>
+            </view>
+          </van-cell-group>
+          <view slot="right" class="swipe-del">删除</view>
+        </van-swipe-cell>
       </view>
       <view style="text-align: center;margin: 10px 10px 20px;">
         <view wx:if="{{loading}}" class="nomore">加载中...</view>
@@ -51,3 +58,4 @@
     </action-sheet-cancel>
   </action-sheet>
 </view>
+<van-dialog id="van-dialog" />

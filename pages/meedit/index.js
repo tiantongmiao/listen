@@ -24,10 +24,11 @@ Component({
       _user._id = this.data._id;
       _user.uName = this.data.uName;
       _user.uInfomation = this.data.uInfomation;
-      console.log(this.data.uInfomation)
       database.edit('user', _user).then(res => {
         app.globalData.userInfo = {...app.globalData.userInfo,...this.data}
       })
+      const url = "/pages/me/index";
+      wx.switchTab({url})
     },
     changeName(value) {
       this.setData({

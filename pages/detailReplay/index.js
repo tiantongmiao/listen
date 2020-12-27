@@ -4,6 +4,7 @@ const User = require('../../module/model/User.js')
 const Replay = require('../../module/model/Replay.js')
 const pageHelper = require('../../module/pagehelper/PageHelper.js')
 const utils = require('../../utils/util.js')
+import Dialog from '../../vant-weapp/dialog/dialog'
 var app = getApp();
 Page({
   data: {
@@ -165,20 +166,31 @@ Page({
   },
   // 删除功能
   onDel(e) {
-    // 删除动态评论
-    let replay = new Replay();
-    replay.rTarget = e.currentTarget.dataset.id
-    database.del('replay', replay).then(res => {
-      // 删除动态
-      let mboard = new MBoard()
-      mboard._id = e.currentTarget.dataset.id
-      database.del('mboard', mboard).then(res => {
+    Dialog.confirm({
+      message: '确定删除全部评论？',
+    }).then(() => {
+      // 删除全部评论
+      let replay = new Replay();
+      replay.rTarget = e.currentTarget.dataset.id
+      database.del('replay', replay).then(res => {
         this.getmList(true)
       }).catch(err => {
         console.log(err)
       })
-    }).catch(err => {
-      console.log(err)
+    })
+  },
+  //删除单条评论
+  onClose(e) {
+    Dialog.confirm({
+      message: '确定删除？',
+    }).then(() => {
+      let replay = new Replay();
+      replay._id = e.currentTarget.dataset.replayid
+      database.del('replay', replay).then(res => {
+        this.getmList(true)
+      }).catch(err => {
+        console.log(err)
+      })
     })
   },
   onShowEditChange() {
