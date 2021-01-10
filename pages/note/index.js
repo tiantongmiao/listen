@@ -143,7 +143,7 @@ Component({
       let replay = new Replay();
       replay.rTarget = id
       replay.status = 1
-      replay.rType = 2
+      replay.rType = 1
       let paged = new pageHelper(1, 3, replay);
       await database.find('replay', paged).then(res => {
         data = res.data

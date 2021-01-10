@@ -9,7 +9,6 @@
         "es6": true,
         "enhance": false,
         "postcss": true,
-        "preloadBackgroundData": false,
         "minified": true,
         "newFeature": false,
         "coverView": true,
@@ -21,7 +20,6 @@
         "checkInvalidKey": true,
         "checkSiteMap": true,
         "uploadWithSourceMap": true,
-        "compileHotReLoad": false,
         "useMultiFrameRuntime": false,
         "useApiHook": true,
         "babelSetting": {
