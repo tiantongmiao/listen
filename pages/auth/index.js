@@ -21,7 +21,7 @@ Component({
               let user = new User();
               user.uName = userInfo.nickName;
               user.uWxImg = userInfo.avatarUrl;
-              user.type = 1;
+              user.uType = 1;
               user.uInfomation = "";
               database.add('user', user).then(res => {
                 console.log(res)

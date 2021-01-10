@@ -45,6 +45,9 @@ Page({
   getMBoard() {
     let mboard = new MBoard()
     mboard._id = this.data.oid;
+    if(!this.data.isAdmin) {
+      mboard. _openid = '{openid}'
+    }
     let paged = new pageHelper(1, 1, mboard);
     database.find('mboard', paged).then(res => {
       let _obj = res.data[0]
@@ -76,15 +79,13 @@ Page({
       let replay = new Replay()
       replay.rTarget = this.data.oid
       replay.status = 1
-      replay.rType = 2
+      replay.rType = 1
       let paged = new pageHelper(_page, 10, replay);
       database.find('replay', paged).then(res => {
-        console.log(res)
         let _arr = [...this.data.messageList,...res.data]
         this.setData({
           messageList: _arr
         })
-        console.log(_arr)
         _arr.map((item, index) => {
           this.getUser(item._openid).then(_users => {
             item['uName'] = _users.uName;
@@ -97,7 +98,6 @@ Page({
           return item;
         });
         database.count('replay', replay).then(res => {
-          console.log(this.data.messageList.length)
           if (this.data.messageList.length < res.total) {
             this.setData({
               noMore: false,
@@ -207,7 +207,7 @@ Page({
   onSaveAdd() {
     // 保存添加
     let replay = new Replay()
-    replay.rType = 2
+    replay.rType = 1
     replay.rContent = this.data.editInput
     replay.rTarget = this.data.listObj._id
     replay.status = 1
@@ -248,7 +248,7 @@ Page({
       let replay = new Replay();
       replay.rTarget = id
       replay.status = 1
-      replay.rType = 2
+      replay.rType = 1
       let paged = new pageHelper(1, 1, replay);
       await database.find('replay', paged).then(res => {
         // console.log(res)

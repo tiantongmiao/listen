@@ -10,7 +10,7 @@ App({
       console.error("云不存在")
     } else {
       wx.cloud.init({
-        env: 'listen-2gskorawde4c93ea',
+        env: 'qingning-5g7ib5lidcc0ef24',
         traceUser: true,
       })
       this.globalData.db = wx.cloud.database()

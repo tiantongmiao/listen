@@ -14,6 +14,17 @@ Component({
           active: 0
         })
       }
+      if(app.globalData.userInfo == null) {
+        app.userInfoReadyCallback = () => {
+          this.setData({
+            isAdmin: app.globalData.userInfo.uType == 2
+          })
+        }
+      } else{
+        this.setData({
+          isAdmin: app.globalData.userInfo.uType == 2
+        })
+      }
     }
   },
   data: {
@@ -30,17 +41,6 @@ Component({
     isAdmin: 1,
   },
   ready: function (options) {
-    if(app.globalData.userInfo == null) {
-      app.userInfoReadyCallback = () => {
-        this.setData({
-          isAdmin: app.globalData.userInfo.uType == 2
-        })
-      }
-    } else{
-      this.setData({
-        isAdmin: app.globalData.userInfo.uType == 2
-      })
-    }
     this.init(false, 1)
   },
   methods: {
@@ -52,9 +52,11 @@ Component({
           loading: true
         })
       }
-      this.setData({
-        paged: _page
-      })
+      if (_page) {
+        this.setData({
+          paged: _page
+        })
+      }
       let dy = new Dynamic();
       dy.dType = 1;
       dy.status = 1;
@@ -211,6 +213,7 @@ Component({
           // on confirm
           let replay = new Replay();
           replay.rTarget = e.currentTarget.dataset.id
+          console.log(replay)
           database.del('replay', replay).then(res => {
             // 删除动态
             let dy = new Dynamic()

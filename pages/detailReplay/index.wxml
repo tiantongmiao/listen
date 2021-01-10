@@ -36,7 +36,7 @@
               <view class="flex-1 text-left break-all">{{citem.rContent}}</view>
             </view>
           </van-cell-group>
-          <view slot="right" class="swipe-del">删除</view>
+          <view wx:if="{{isAdmin}}" slot="right" class="swipe-del">删除</view>
         </van-swipe-cell>
       </view>
       <view style="text-align: center;margin: 10px 10px 20px;">
